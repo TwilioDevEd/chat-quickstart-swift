@@ -58,7 +58,7 @@ class ViewController: UIViewController {
               })
             } else {
               // Create the general channel (for public use) if it hasn't been created yet
-              channels.createChannelWithFriendlyName("General Channel", type: .Public) {
+              channels.createChannelWithFriendlyName("General Chat Channel", type: .Public) {
                   (channelResult, channel) -> Void in
                 if result == .Success {
                   self.generalChannel = channel
