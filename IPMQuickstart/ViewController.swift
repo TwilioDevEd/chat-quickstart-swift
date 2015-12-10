@@ -62,9 +62,9 @@ class ViewController: UIViewController {
                   (channelResult, channel) -> Void in
                 if result == .Success {
                   self.generalChannel = channel
-                  self.generalChannel?.setUniqueName(defaultChannel, completion: { result in
-                    self.generalChannel?.joinWithCompletion({ result in
-                      print("Channel joined with result \(result)")
+                  self.generalChannel?.joinWithCompletion({ result in
+                    self.generalChannel?.setUniqueName(defaultChannel, completion: { result in
+                      print("channel unqiue name set")
                     })
                   })
                 }
