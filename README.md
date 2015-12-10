@@ -6,13 +6,13 @@ In this guide, we will get you up and running quickly with a sample application
 you can build on as you learn more about IP Messaging. Sound like a plan? Then
 let's get cracking!
 
-## Gather Account Credentials
+## Gather Account Information
 
-The first thing we need to do is grab all the necessary credentials from our
+The first thing we need to do is grab all the necessary configuration values from our
 Twilio account. To set up our back-end for IP messaging, we will need four 
-credentials from our account:
+pieces of information:
 
-| Credential  | Description |
+| Config Value  | Description |
 | :-------------  |:------------- |
 Service Instance SID | Like a database for your IP Messaging data - [generate one in the console here](https://www.twilio.com/user/account/ip-messaging/services)
 Account SID | Your primary Twilio account identifier - find this [in the console here](https://www.twilio.com/user/account/ip-messaging/getting-started).
