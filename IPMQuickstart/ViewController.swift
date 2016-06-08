@@ -27,7 +27,6 @@ class ViewController: UIViewController {
     // the PHP starter app on your local machine, as instructed in the quick start guide
     let deviceId = UIDevice.currentDevice().identifierForVendor!.UUIDString
     let urlString = "http://localhost:8000/token.php?device=\(deviceId)"
-    let defaultChannel = "general"
     
     // Get JSON from server
     let config = NSURLSessionConfiguration.defaultSessionConfiguration()
@@ -43,35 +42,9 @@ class ViewController: UIViewController {
         let json = JSON(data: data!)
         let token = json["token"].stringValue
         self.identity = json["identity"].stringValue
-        
-        // Set up Twilio IPM client and join the general channel
-        self.client = TwilioIPMessagingClient.ipMessagingClientWithToken(token, delegate: self)
-        
-        // Auto-join the general channel
-        self.client?.channelsListWithCompletion { result, channels in
-          if (result == .Success) {
-            if let channel = channels.channelWithUniqueName(defaultChannel) {
-              // Join the general channel if it already exists
-              self.generalChannel = channel
-              self.generalChannel?.joinWithCompletion({ result in
-                print("Channel joined with result \(result)")
-              })
-            } else {
-              // Create the general channel (for public use) if it hasn't been created yet
-              channels.createChannelWithFriendlyName("General Chat Channel", type: .Public) {
-                  (channelResult, channel) -> Void in
-                if result == .Success {
-                  self.generalChannel = channel
-                  self.generalChannel?.joinWithCompletion({ result in
-                    self.generalChannel?.setUniqueName(defaultChannel, completion: { result in
-                      print("channel unqiue name set")
-                    })
-                  })
-                }
-              }
-            }
-          }
-        }
+        // Set up Twilio IPM client
+        let accessManager = TwilioAccessManager.init(token: token, delegate: nil)
+        self.client = TwilioIPMessagingClient.ipMessagingClientWithAccessManager(accessManager, properties: nil, delegate: self)
         
         // Update UI on main thread
         dispatch_async(dispatch_get_main_queue()) {
@@ -84,17 +57,17 @@ class ViewController: UIViewController {
     
     // Listen for keyboard events and animate text field as necessary
     NSNotificationCenter.defaultCenter().addObserver(self,
-      selector: Selector("keyboardWillShow:"),
+      selector: #selector(ViewController.keyboardWillShow(_:)),
       name:UIKeyboardWillShowNotification,
       object: nil);
     
     NSNotificationCenter.defaultCenter().addObserver(self,
-      selector: Selector("keyboardDidShow:"),
+      selector: #selector(ViewController.keyboardDidShow(_:)),
       name:UIKeyboardDidShowNotification,
       object: nil);
     
     NSNotificationCenter.defaultCenter().addObserver(self,
-      selector: Selector("keyboardWillHide:"),
+      selector: #selector(ViewController.keyboardWillHide(_:)),
       name:UIKeyboardWillHideNotification,
       object: nil);
     
@@ -147,6 +120,32 @@ class ViewController: UIViewController {
 
 // MARK: Twilio IP Messaging Delegate
 extension ViewController: TwilioIPMessagingClientDelegate {
+  func ipMessagingClient(client: TwilioIPMessagingClient!, synchronizationStatusChanged status: TWMClientSynchronizationStatus) {
+    if status == .Completed {
+      // Join (or create) the general channel
+      let defaultChannel = "general"
+      
+      self.generalChannel = client.channelsList().channelWithUniqueName(defaultChannel)
+      if let generalChannel = self.generalChannel {
+        generalChannel.joinWithCompletion({ result in
+          print("Channel joined with result \(result)")
+        })
+      } else {
+        // Create the general channel (for public use) if it hasn't been created yet
+        client.channelsList().createChannelWithOptions([TWMChannelOptionFriendlyName: "General Chat Channel", TWMChannelOptionType: TWMChannelType.Public.rawValue], completion: { (result, channel) -> Void in
+          if result.isSuccessful() {
+            self.generalChannel = channel
+            self.generalChannel?.joinWithCompletion({ result in
+              self.generalChannel?.setUniqueName(defaultChannel, completion: { result in
+                print("channel unqiue name set")
+              })
+            })
+          }
+        })
+      }
+    }
+  }
+  
   // Called whenever a channel we've joined receives a new message
   func ipMessagingClient(client: TwilioIPMessagingClient!, channel: TWMChannel!,
     messageAdded message: TWMMessage!) {

@@ -1,4 +1,6 @@
-source 'https://github.com/CocoaPods/Specs.git'
+source 'https://github.com/CocoaPods/Specs'
+source 'https://github.com/twilio/cocoapod-specs'
 
-pod 'TwilioIPMessagingClient', :podspec => 'https://media.twiliocdn.com/sdk/rtc/ios/ip-messaging/v0.13/TwilioIPMessagingClient.podspec'
-pod 'TwilioCommon', :podspec => 'https://media.twiliocdn.com/sdk/rtc/ios/common/v0.1/TwilioCommon.podspec'
+target 'IPMQuickstart' do
+  pod 'TwilioIPMessagingClient', '~> 0.14.0'
+end
