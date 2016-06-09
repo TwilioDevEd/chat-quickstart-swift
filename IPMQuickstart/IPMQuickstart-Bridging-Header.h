@@ -9,6 +9,7 @@
 #ifndef IPMQuickstart_Bridging_Header_h
 #define IPMQuickstart_Bridging_Header_h
 
+#import <TwilioCommon/TwilioCommon.h>
 #import <TwilioIPMessagingClient/TwilioIPMessagingClient.h>
 
 #endif /* IPMQuickstart_Bridging_Header_h */
