@@ -88,7 +88,7 @@ pod install
 Open up the project from the Terminal with:
 
 ```
-open IPMQuickstart.xcworkspace
+open ChatQuickstart.xcworkspace
 ```
 
 Note that you are opening the `.xcworkspace` file rather than the `xcodeproj`
