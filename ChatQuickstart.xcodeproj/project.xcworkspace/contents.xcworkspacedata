@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:IPMQuickstart.xcodeproj">
+      location = "self:ChatQuickstart.xcodeproj">
    </FileRef>
 </Workspace>
