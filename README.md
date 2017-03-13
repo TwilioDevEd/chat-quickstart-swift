@@ -26,7 +26,7 @@ You can learn more about what the server app does [by going through this guide](
 For now, let's just get a simple server running so we can use it to power our
 iOS application.
 
-<a href="https://github.com/TwilioDevEd/ipm-quickstart-php/archive/master.zip" target="_blank">
+<a href="https://github.com/TwilioDevEd/sdk-starter-php/archive/master.zip" target="_blank">
     Download server app for PHP
 </a>
 
@@ -50,7 +50,7 @@ where you unzipped the server app, run the following command in the terminal:
 php -S localhost:8000
 ```
 
-To confirm everything is set up correctly, visit [http://localhost:8000](http://localhost:8000)
+To confirm everything is set up correctly, visit [http://localhost:8000/chat/](http://localhost:8000/chat/)
 in a web browser. You should be assigned a random username, and be able to enter
 chat messages in a simple UI that looks like this:
 
