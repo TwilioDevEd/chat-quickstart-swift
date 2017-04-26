@@ -8,22 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		286173571DEDEF0C00247541 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286173561DEDEF0C00247541 /* AppDelegate.swift */; };
-		286173591DEDEF0C00247541 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286173581DEDEF0C00247541 /* ViewController.swift */; };
+		286173591DEDEF0C00247541 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286173581DEDEF0C00247541 /* ChatViewController.swift */; };
 		2861735C1DEDEF0C00247541 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2861735A1DEDEF0C00247541 /* Main.storyboard */; };
 		2861735E1DEDEF0C00247541 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2861735D1DEDEF0C00247541 /* Assets.xcassets */; };
 		286173611DEDEF0C00247541 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2861735F1DEDEF0C00247541 /* LaunchScreen.storyboard */; };
-		286173691DEE095200247541 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286173681DEE095200247541 /* SwiftyJSON.swift */; };
+		2878B4931EB1162000FC7E18 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2878B4921EB1162000FC7E18 /* Utils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		286173531DEDEF0C00247541 /* ChatQuickstart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatQuickstart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		286173561DEDEF0C00247541 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		286173581DEDEF0C00247541 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		286173581DEDEF0C00247541 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		2861735B1DEDEF0C00247541 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2861735D1DEDEF0C00247541 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		286173601DEDEF0C00247541 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		286173621DEDEF0C00247541 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		286173681DEE095200247541 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		2878B4921EB1162000FC7E18 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,13 +56,13 @@
 		286173551DEDEF0C00247541 /* ChatQuickstart */ = {
 			isa = PBXGroup;
 			children = (
-				286173681DEE095200247541 /* SwiftyJSON.swift */,
 				286173561DEDEF0C00247541 /* AppDelegate.swift */,
-				286173581DEDEF0C00247541 /* ViewController.swift */,
+				286173581DEDEF0C00247541 /* ChatViewController.swift */,
 				2861735A1DEDEF0C00247541 /* Main.storyboard */,
 				2861735D1DEDEF0C00247541 /* Assets.xcassets */,
 				2861735F1DEDEF0C00247541 /* LaunchScreen.storyboard */,
 				286173621DEDEF0C00247541 /* Info.plist */,
+				2878B4921EB1162000FC7E18 /* Utils.swift */,
 			);
 			path = ChatQuickstart;
 			sourceTree = "<group>";
@@ -99,6 +99,7 @@
 				TargetAttributes = {
 					286173521DEDEF0C00247541 = {
 						CreatedOnToolsVersion = 8.1;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -139,9 +140,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				286173691DEE095200247541 /* SwiftyJSON.swift in Sources */,
-				286173591DEDEF0C00247541 /* ViewController.swift in Sources */,
+				286173591DEDEF0C00247541 /* ChatViewController.swift in Sources */,
 				286173571DEDEF0C00247541 /* AppDelegate.swift in Sources */,
+				2878B4931EB1162000FC7E18 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,7 +269,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.twilio.ChatQuickstart;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -280,7 +281,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.twilio.ChatQuickstart;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
