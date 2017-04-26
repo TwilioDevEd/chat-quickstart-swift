@@ -13,7 +13,7 @@ import TwilioChatClient
 class ChatViewController: UIViewController {
     
     //Important - update this URL
-    let tokenURL = "http://localhost:3000/token"
+    let tokenURL = "http://localhost:8000/token.php"
     
     
     
