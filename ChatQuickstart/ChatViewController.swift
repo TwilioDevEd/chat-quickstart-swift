@@ -91,13 +91,15 @@ class ChatViewController: UIViewController {
         TokenUtils.retrieveToken(url: urlString) { (token, identity, error) in
             if let token = token, let identity = identity {
                 self.identity = identity
-                // Set up Twilio IPM client
-                self.client = TwilioChatClient(token: token, properties: nil, delegate: self)
-                
-                // Update UI on main thread
-                DispatchQueue.main.async() {
-                    self.navigationItem.prompt = "Logged in as \"\(self.identity)\""
-                }
+                // Set up Twilio Chat client
+                TwilioChatClient.chatClient(withToken: token, properties: nil, delegate: self) {
+                    (result, chatClient) in
+                        self.client = chatClient;
+                        // Update UI on main thread
+                        DispatchQueue.main.async() {
+                            self.navigationItem.prompt = "Logged in as \"\(self.identity)\""
+                        }
+                    }
             } else {
                 print("Error retrieving token: \(error)")
             }
@@ -155,7 +157,8 @@ class ChatViewController: UIViewController {
 
 // MARK: Twilio Chat Delegate
 extension ChatViewController: TwilioChatClientDelegate {
-    func chatClient(_ client: TwilioChatClient!, synchronizationStatusChanged status: TCHClientSynchronizationStatus) {
+        
+    func chatClient(_ client: TwilioChatClient!, synchronizationStatusUpdated status: TCHClientSynchronizationStatus) {
         if status == .completed {
             // Join (or create) the general channel
             let defaultChannel = "general"
