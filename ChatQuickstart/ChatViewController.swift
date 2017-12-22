@@ -62,13 +62,16 @@ class ChatViewController: UIViewController {
             TCHChannelOptionFriendlyName: "General Channel",
             TCHChannelOptionType: TCHChannelType.public.rawValue
             ] as [String : Any]
-        client?.channelsList().createChannel(options: options, completion: { channelResult, channel in
-            if (channelResult?.isSuccessful())! {
-                print("Channel created.")
-            } else {
-                print("Channel NOT created.")
-            }
-        })
+        if let client = client, let channelsList = client.channelsList() {
+            channelsList.createChannel(options: options, completion: { channelResult, channel in
+                if (channelResult.isSuccessful()) {
+                    print("Channel created.")
+                } else {
+                    print("Channel NOT created.")
+                }
+            })
+        }
+        
         
         super.viewDidAppear(animated)
         login()
@@ -158,41 +161,39 @@ class ChatViewController: UIViewController {
 // MARK: Twilio Chat Delegate
 extension ChatViewController: TwilioChatClientDelegate {
         
-    func chatClient(_ client: TwilioChatClient!, synchronizationStatusUpdated status: TCHClientSynchronizationStatus) {
+    func chatClient(_ client: TwilioChatClient, synchronizationStatusUpdated status: TCHClientSynchronizationStatus) {
         if status == .completed {
             // Join (or create) the general channel
             let defaultChannel = "general"
-            client.channelsList().channel(withSidOrUniqueName: defaultChannel, completion: { (result, channel) in
-                if let channel = channel {
-                    self.generalChannel = channel
-                    channel.join(completion: { result in
-                        print("Channel joined with result \(result)")
-                        
-                    })
-                } else {
-                    // Create the general channel (for public use) if it hasn't been created yet
-                    client.channelsList().createChannel(options: [TCHChannelOptionFriendlyName: "General Chat Channel", TCHChannelOptionType: TCHChannelType.public.rawValue], completion: { (result, channel) -> Void in
-                        if let result = result {
-                            if result.isSuccessful() {
-                                self.generalChannel = channel
-                                self.generalChannel?.join(completion: { result in
-                                    self.generalChannel?.setUniqueName(defaultChannel, completion: { result in
-                                        print("channel unique name set")
+            if let channelsList = client.channelsList() {
+                channelsList.channel(withSidOrUniqueName: defaultChannel, completion: { (result, channel) in
+                    if let channel = channel {
+                        self.generalChannel = channel
+                        channel.join(completion: { result in
+                            print("Channel joined with result \(result)")
+                            
+                        })
+                    } else {
+                        // Create the general channel (for public use) if it hasn't been created yet
+                        channelsList.createChannel(options: [TCHChannelOptionFriendlyName: "General Chat Channel", TCHChannelOptionType: TCHChannelType.public.rawValue], completion: { (result, channel) -> Void in
+                                if result.isSuccessful() {
+                                    self.generalChannel = channel
+                                    self.generalChannel?.join(completion: { result in
+                                        self.generalChannel?.setUniqueName(defaultChannel, completion: { result in
+                                            print("channel unique name set")
+                                        })
                                     })
-                                })
-                            }
-                        }
-                    })
-                }
-            })
-            
-            
+                                }
+                        })
+                    }
+                })
+            }
         }
     }
     
     // Called whenever a channel we've joined receives a new message
-    func chatClient(_ client: TwilioChatClient!, channel: TCHChannel!,
-                    messageAdded message: TCHMessage!) {
+    func chatClient(_ client: TwilioChatClient, channel: TCHChannel,
+                    messageAdded message: TCHMessage) {
         self.messages.append(message)
         self.tableView.reloadData()
         DispatchQueue.main.async() {
@@ -207,13 +208,12 @@ extension ChatViewController: TwilioChatClientDelegate {
 extension ChatViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let messages = self.generalChannel?.messages {
-            let msg = messages.createMessage(withBody: textField.text!)
-            messages.send(msg) { result in
+            let messageOptions = TCHMessageOptions().withBody(textField.text!)
+            messages.sendMessage(with: messageOptions, completion: { (result, message) in
                 textField.text = ""
                 textField.resignFirstResponder()
-            }
+            })
         }
-        
         return true
     }
 }
