@@ -34,17 +34,17 @@ class ChatViewController: UIViewController {
         
         // Listen for keyboard events and animate text field as necessary
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(ChatViewController.keyboardWillShow),
+                                               selector: #selector(keyboardWillShow),
                                                name:Notification.Name.UIKeyboardWillShow,
                                                object: nil);
         
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(ChatViewController.keyboardDidShow),
+                                               selector: #selector(keyboardDidShow),
                                                name:Notification.Name.UIKeyboardDidShow,
                                                object: nil);
         
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(ChatViewController.keyboardWillHide),
+                                               selector: #selector(keyboardWillHide),
                                                name:Notification.Name.UIKeyboardWillHide,
                                                object: nil);
         
@@ -104,7 +104,7 @@ class ChatViewController: UIViewController {
                         }
                     }
             } else {
-                print("Error retrieving token: \(error)")
+                print("Error retrieving token: \(error.debugDescription)")
             }
             
         }
@@ -121,7 +121,7 @@ class ChatViewController: UIViewController {
     
     // MARK: Keyboard Dodging Logic
     
-    func keyboardWillShow(notification: NSNotification) {
+    @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardRect = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             UIView.animate(withDuration: 0.1, animations: { () -> Void in
                 self.bottomConstraint.constant = keyboardRect.height + 10
@@ -130,11 +130,11 @@ class ChatViewController: UIViewController {
         }
     }
     
-    func keyboardDidShow(notification: NSNotification) {
+    @objc func keyboardDidShow(notification: NSNotification) {
         self.scrollToBottomMessage()
     }
     
-    func keyboardWillHide(notification: NSNotification) {
+    @objc func keyboardWillHide(notification: NSNotification) {
         UIView.animate(withDuration: 0.1, animations: { () -> Void in
             self.bottomConstraint.constant = 20
             self.view.layoutIfNeeded()
