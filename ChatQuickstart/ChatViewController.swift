@@ -12,15 +12,17 @@ import TwilioChatClient
 
 class ChatViewController: UIViewController {
     
-    //Important - update this URL
-    let tokenURL = "http://localhost:8000/token.php"
-    
-    
+    // Important - update this URL with your Twilio Function URL
+    let tokenURL = "https://YOUR_TWILIO_FUNCTION_DOMAIN_HERE.twil.io/chat-token"
+
+    // Important - this identity would be assigned by your app, for
+    // instance after a user logs in
+    var identity = "USER_IDENTITY"
+
     
     // MARK: Chat variables
     var client: TwilioChatClient? = nil
     var generalChannel: TCHChannel? = nil
-    var identity = ""
     var messages: [TCHMessage] = []
     
     // MARK: UI controls
@@ -89,11 +91,10 @@ class ChatViewController: UIViewController {
         // Fetch Access Token from the server and initialize Chat Client - this assumes you are running
         // the PHP starter app on your local machine, as instructed in the quick start guide
         let deviceId = UIDevice.current.identifierForVendor!.uuidString
-        let urlString = "\(tokenURL)?device=\(deviceId)"
+        let urlString = "\(tokenURL)?identity=\(identity)&device=\(deviceId)"
         
         TokenUtils.retrieveToken(url: urlString) { (token, identity, error) in
-            if let token = token, let identity = identity {
-                self.identity = identity
+            if let token = token {
                 // Set up Twilio Chat client
                 TwilioChatClient.chatClient(withToken: token, properties: nil, delegate: self) {
                     (result, chatClient) in
