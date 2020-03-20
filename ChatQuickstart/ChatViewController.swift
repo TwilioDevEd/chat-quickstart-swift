@@ -33,21 +33,21 @@ class ChatViewController: UIViewController {
         // Listen for keyboard events and animate text field as necessary
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow),
-                                               name:Notification.Name.UIKeyboardWillShow,
+                                               name:UIResponder.keyboardWillShowNotification,
                                                object: nil);
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardDidShow),
-                                               name:Notification.Name.UIKeyboardDidShow,
+                                               name:UIResponder.keyboardDidShowNotification,
                                                object: nil);
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillHide),
-                                               name:Notification.Name.UIKeyboardWillHide,
+                                               name:UIResponder.keyboardWillHideNotification,
                                                object: nil);
         
         // Set up UI controls
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 66.0
         self.tableView.separatorStyle = .none
     }
@@ -78,7 +78,7 @@ class ChatViewController: UIViewController {
     // MARK: Keyboard Dodging Logic
     
     @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardRect = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             UIView.animate(withDuration: 0.1, animations: { () -> Void in
                 self.bottomConstraint.constant = keyboardRect.height + 10
                 self.view.layoutIfNeeded()
