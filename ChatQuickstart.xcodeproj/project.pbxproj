@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28614A352419A19000E4C4B3 /* QuickstartChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28614A342419A19000E4C4B3 /* QuickstartChatManager.swift */; };
 		286173571DEDEF0C00247541 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286173561DEDEF0C00247541 /* AppDelegate.swift */; };
 		286173591DEDEF0C00247541 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286173581DEDEF0C00247541 /* ChatViewController.swift */; };
 		2861735C1DEDEF0C00247541 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2861735A1DEDEF0C00247541 /* Main.storyboard */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		28614A342419A19000E4C4B3 /* QuickstartChatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickstartChatManager.swift; sourceTree = "<group>"; };
 		286173531DEDEF0C00247541 /* ChatQuickstart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatQuickstart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		286173561DEDEF0C00247541 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		286173581DEDEF0C00247541 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -37,11 +39,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		042B849FEDC3F0D22C8DABAA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		2861734A1DEDEF0C00247541 = {
 			isa = PBXGroup;
 			children = (
 				286173551DEDEF0C00247541 /* ChatQuickstart */,
 				286173541DEDEF0C00247541 /* Products */,
+				042B849FEDC3F0D22C8DABAA /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -63,6 +73,7 @@
 				2861735F1DEDEF0C00247541 /* LaunchScreen.storyboard */,
 				286173621DEDEF0C00247541 /* Info.plist */,
 				2878B4921EB1162000FC7E18 /* Utils.swift */,
+				28614A342419A19000E4C4B3 /* QuickstartChatManager.swift */,
 			);
 			path = ChatQuickstart;
 			sourceTree = "<group>";
@@ -109,6 +120,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -140,6 +152,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28614A352419A19000E4C4B3 /* QuickstartChatManager.swift in Sources */,
 				286173591DEDEF0C00247541 /* ChatViewController.swift in Sources */,
 				286173571DEDEF0C00247541 /* AppDelegate.swift in Sources */,
 				2878B4931EB1162000FC7E18 /* Utils.swift in Sources */,
