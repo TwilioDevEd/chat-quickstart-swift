@@ -109,7 +109,7 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
         let options = [
             TCHChannelOptionUniqueName: channelName,
             TCHChannelOptionFriendlyName: "General Channel",
-            TCHChannelOptionType: TCHChannelType.public.rawValue
+            TCHChannelOptionType: TCHChannelType.private.rawValue
             ] as [String : Any]
         channelsList.createChannel(options: options, completion: { channelResult, channel in
             if (channelResult.isSuccessful()) {
