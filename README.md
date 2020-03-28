@@ -61,7 +61,7 @@ Note that you are opening the `.xcworkspace` file rather than the `xcodeproj`
 file, like all Cocoapods applications. You will need to open your project this
 way every time. 
 
-You will need to go into `QuickstartChatManager.swift` and modify the URL for your
+You will need to go into `ChatConstants.swift` and modify the URL for your
 Twilio Function there - each Twilio user will have a different domain to use for
 their Twilio Functions.
 

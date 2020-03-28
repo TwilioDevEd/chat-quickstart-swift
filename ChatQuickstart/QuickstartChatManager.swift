@@ -17,10 +17,7 @@ protocol QuickstartChatManagerDelegate {
 
 class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
     
-    // Important - update this URL with your Twilio Function URL
-    // Important - this function must be protected in production
-    // and actually check if user could be granted access to your chat service.
-    private let tokenURL = "https://YOUR_TWILIO_FUNCTION_DOMAIN_HERE.twil.io/chat-token"
+
     
     private let channelName = "general"
     

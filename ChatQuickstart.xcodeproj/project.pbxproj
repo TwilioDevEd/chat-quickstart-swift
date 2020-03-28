@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		281A9481242FC2E10017DAD7 /* ChatConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281A9480242FC2E10017DAD7 /* ChatConstants.swift */; };
 		28614A352419A19000E4C4B3 /* QuickstartChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28614A342419A19000E4C4B3 /* QuickstartChatManager.swift */; };
 		286173571DEDEF0C00247541 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286173561DEDEF0C00247541 /* AppDelegate.swift */; };
 		286173591DEDEF0C00247541 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286173581DEDEF0C00247541 /* ChatViewController.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		281A9480242FC2E10017DAD7 /* ChatConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatConstants.swift; sourceTree = "<group>"; };
 		28614A342419A19000E4C4B3 /* QuickstartChatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickstartChatManager.swift; sourceTree = "<group>"; };
 		286173531DEDEF0C00247541 /* ChatQuickstart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatQuickstart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		286173561DEDEF0C00247541 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 				286173621DEDEF0C00247541 /* Info.plist */,
 				2878B4921EB1162000FC7E18 /* Utils.swift */,
 				28614A342419A19000E4C4B3 /* QuickstartChatManager.swift */,
+				281A9480242FC2E10017DAD7 /* ChatConstants.swift */,
 			);
 			path = ChatQuickstart;
 			sourceTree = "<group>";
@@ -156,6 +159,7 @@
 				286173591DEDEF0C00247541 /* ChatViewController.swift in Sources */,
 				286173571DEDEF0C00247541 /* AppDelegate.swift in Sources */,
 				2878B4931EB1162000FC7E18 /* Utils.swift in Sources */,
+				281A9481242FC2E10017DAD7 /* ChatConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
