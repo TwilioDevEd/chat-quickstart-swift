@@ -10,10 +10,16 @@ import UIKit
 
 import TwilioChatClient
 
+protocol QuickstartChatManagerDelegate {
+    func reloadMessages()
+    func scrollToBottomMessage()
+}
+
 class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
     
-    
     // Important - update this URL with your Twilio Function URL
+    // Important - this function must be protected in production
+    // and actually check if user could be granted access to your chat service.
     let tokenURL = "https://YOUR_TWILIO_FUNCTION_DOMAIN_HERE.twil.io/chat-token"
     
     var chatManagerDelegate: QuickstartChatManagerDelegate?
@@ -85,8 +91,7 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
     func login(_ identity:String, completion:@escaping (TCHResult)->Void) {
         // Fetch Access Token from the server and initialize Chat Client - this assumes you are
         // calling a Twilio function, as described in the Quickstart docs
-        let deviceId = UIDevice.current.identifierForVendor!.uuidString
-        let urlString = "\(tokenURL)?identity=\(identity)&device=\(deviceId)"
+        let urlString = "\(tokenURL)?identity=\(identity)"
         
         TokenUtils.retrieveToken(url: urlString) { (token, identity, error) in
             if let token = token {
@@ -129,13 +134,5 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
                 }
             })
         }
-        
-        
-
     }
-}
-
-protocol QuickstartChatManagerDelegate {
-    func reloadMessages()
-    func scrollToBottomMessage()
 }
