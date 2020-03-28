@@ -12,15 +12,16 @@ import TwilioChatClient
 
 protocol QuickstartChatManagerDelegate {
     func reloadMessages()
-    func scrollToBottomMessage()
+    func receivedNewMessage()
 }
 
 class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
+        
+    // the unique name of the channel you create
+    private let uniqueChannelName = "general"
+    private let friendlyChannelName = "General Channel"
     
-
-    
-    private let channelName = "general"
-    
+    // For the quickstart, this will be the view controller
     var chatManagerDelegate: QuickstartChatManagerDelegate?
     
     // MARK: Chat variables
@@ -53,7 +54,7 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
             if let delegate = self.chatManagerDelegate {
                 delegate.reloadMessages()
                 if self.messages.count > 0 {
-                    delegate.scrollToBottomMessage()
+                    delegate.receivedNewMessage()
                 }
             }
         }
@@ -90,7 +91,7 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
     }
     
     
-    func logout() {
+    func shutdown() {
         if let client = client {
             client.delegate = nil
             client.shutdown()
@@ -104,8 +105,8 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
         }
         // Create the channel if it hasn't been created yet
         let options = [
-            TCHChannelOptionUniqueName: channelName,
-            TCHChannelOptionFriendlyName: "General Channel",
+            TCHChannelOptionUniqueName: uniqueChannelName,
+            TCHChannelOptionFriendlyName: friendlyChannelName,
             TCHChannelOptionType: TCHChannelType.private.rawValue
             ] as [String : Any]
         channelsList.createChannel(options: options, completion: { channelResult, channel in
@@ -123,7 +124,7 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
         guard let client = client, let channelsList = client.channelsList() else {
             return
         }
-        channelsList.channel(withSidOrUniqueName: channelName, completion: { (result, channel) in
+        channelsList.channel(withSidOrUniqueName: uniqueChannelName, completion: { (result, channel) in
             completion(result.isSuccessful())
         })
     }
@@ -133,7 +134,7 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
             return
         }
         // Join the channel if needed
-        channelsList.channel(withSidOrUniqueName: channelName, completion: { (result, channel) in
+        channelsList.channel(withSidOrUniqueName: uniqueChannelName, completion: { (result, channel) in
             guard let channel = channel else {
                 return
             }

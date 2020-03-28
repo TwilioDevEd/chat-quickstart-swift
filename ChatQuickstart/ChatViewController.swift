@@ -60,7 +60,7 @@ class ChatViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        chatManager.logout()
+        chatManager.shutdown()
     }
     
     
@@ -91,7 +91,7 @@ class ChatViewController: UIViewController {
     }
     
     @objc func keyboardDidShow(notification: NSNotification) {
-        self.scrollToBottomMessage()
+        scrollToBottomMessage()
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
@@ -106,6 +106,14 @@ class ChatViewController: UIViewController {
     // Dismiss keyboard if container view is tapped
     @IBAction func viewTapped(_ sender: Any) {
         self.textField.resignFirstResponder()
+    }
+    
+    private func scrollToBottomMessage() {
+        if chatManager.messages.count == 0 {
+            return
+        }
+        let bottomMessageIndex = IndexPath(row: chatManager.messages.count - 1, section: 0)
+        tableView.scrollToRow(at: bottomMessageIndex, at: .bottom, animated: true)
     }
 }
 
@@ -155,11 +163,7 @@ extension ChatViewController: QuickstartChatManagerDelegate {
     }
     
     // Scroll to bottom of table view for messages
-    func scrollToBottomMessage() {
-        if chatManager.messages.count == 0 {
-            return
-        }
-        let bottomMessageIndex = IndexPath(row: chatManager.messages.count - 1, section: 0)
-        tableView.scrollToRow(at: bottomMessageIndex, at: .bottom, animated: true)
+    func receivedNewMessage() {
+        scrollToBottomMessage()
     }
 }
