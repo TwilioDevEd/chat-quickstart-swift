@@ -67,9 +67,13 @@ class ChatViewController: UIViewController {
     // MARK: Login / Logout
     
     func login() {
-        chatManager.login(self.identity) { (result) in
+        chatManager.login(self.identity) { (success) in
             DispatchQueue.main.async() {
-                self.navigationItem.prompt = "Logged in as \"\(self.identity)\""
+                if success {
+                    self.navigationItem.prompt = "Logged in as \"\(self.identity)\""
+                } else {
+                    self.navigationItem.prompt = "Unable to login"
+                }
             }
         }
     }
@@ -127,14 +131,14 @@ extension ChatViewController: UITableViewDataSource {
     
     // Return number of rows in the table
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return chatManager.getMessages().count
+        return chatManager.messages.count
     }
     
     // Create table view rows
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
         -> UITableViewCell {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell", for: indexPath)
-            let message = chatManager.getMessages()[indexPath.row]
+            let message = chatManager.messages[indexPath.row]
             
             // Set table cell values
             cell.detailTextLabel?.text = message.author
@@ -152,12 +156,10 @@ extension ChatViewController: QuickstartChatManagerDelegate {
     
     // Scroll to bottom of table view for messages
     func scrollToBottomMessage() {
-        if chatManager.getMessages().count == 0 {
+        if chatManager.messages.count == 0 {
             return
         }
-        let bottomMessageIndex = IndexPath(row: chatManager.getMessages().count - 1, section: 0)
+        let bottomMessageIndex = IndexPath(row: chatManager.messages.count - 1, section: 0)
         tableView.scrollToRow(at: bottomMessageIndex, at: .bottom, animated: true)
     }
 }
-
-
