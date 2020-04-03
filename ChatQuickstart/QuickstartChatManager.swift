@@ -33,12 +33,14 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
         guard status == .completed else {
             return
         }
-        checkChannelCreation { (created) in
-            if created {
-                self.joinChannel()
+        checkChannelCreation { (channel) in
+            if let channel = channel {
+                self.joinChannel(channel)
             } else {
-                self.createChannel() {
-                    self.joinChannel()
+                self.createChannel() { (success, channel) in
+                    if success, let channel = channel {
+                        self.joinChannel(channel)
+                    }
                 }
             }
         }
@@ -99,7 +101,7 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
         }
     }
     
-    private func createChannel(_ completion: @escaping () -> Void) {
+    private func createChannel(_ completion: @escaping (Bool, TCHChannel?) -> Void) {
         guard let client = client, let channelsList = client.channelsList() else {
             return
         }
@@ -115,38 +117,28 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
             } else {
                 print("Channel NOT created.")
             }
-            completion()
+            completion(channelResult.isSuccessful(), channel)
         })
         
     }
     
-    private func checkChannelCreation(_ completion: @escaping(Bool) -> Void) {
+    private func checkChannelCreation(_ completion: @escaping(TCHChannel?) -> Void) {
         guard let client = client, let channelsList = client.channelsList() else {
             return
         }
         channelsList.channel(withSidOrUniqueName: uniqueChannelName, completion: { (result, channel) in
-            completion(result.isSuccessful())
+            completion(channel)
         })
     }
     
-    private func joinChannel() {
-        guard let client = client, let channelsList = client.channelsList() else {
-            return
+    private func joinChannel(_ channel:TCHChannel) {
+        self.channel = channel
+        if channel.status == .joined {
+            print("Current user already exists in channel")
+        } else {
+            channel.join(completion: { result in
+                print("Result of channel join: \(result.resultText ?? "No Result")")
+            })
         }
-        // Join the channel if needed
-        channelsList.channel(withSidOrUniqueName: uniqueChannelName, completion: { (result, channel) in
-            guard let channel = channel else {
-                return
-            }
-            self.channel = channel
-            if channel.status == .joined {
-                print("Current user already exists in channel")
-            } else {
-                channel.join(completion: { result in
-                    print("Result of channel join: \(result.resultText ?? "No Result")")
-                })
-            }
-
-        })
     }
 }
