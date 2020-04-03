@@ -34,17 +34,17 @@ class ChatViewController: UIViewController {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow),
                                                name:UIResponder.keyboardWillShowNotification,
-                                               object: nil);
+                                               object: nil)
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardDidShow),
                                                name:UIResponder.keyboardDidShowNotification,
-                                               object: nil);
+                                               object: nil)
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillHide),
                                                name:UIResponder.keyboardWillHideNotification,
-                                               object: nil);
+                                               object: nil)
         
         // Set up UI controls
         self.tableView.rowHeight = UITableView.automaticDimension
@@ -73,6 +73,8 @@ class ChatViewController: UIViewController {
                     self.navigationItem.prompt = "Logged in as \"\(self.identity)\""
                 } else {
                     self.navigationItem.prompt = "Unable to login"
+                    let msg = "Unable to login - check the token URL in ChatConstants.swift"
+                    self.displayErrorMessage(msg)
                 }
             }
         }
@@ -82,7 +84,8 @@ class ChatViewController: UIViewController {
     // MARK: Keyboard Dodging Logic
     
     @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey]
+            as? NSValue)?.cgRectValue {
             UIView.animate(withDuration: 0.1, animations: { () -> Void in
                 self.bottomConstraint.constant = keyboardRect.height + 10
                 self.view.layoutIfNeeded()
@@ -112,8 +115,18 @@ class ChatViewController: UIViewController {
         if chatManager.messages.count == 0 {
             return
         }
-        let bottomMessageIndex = IndexPath(row: chatManager.messages.count - 1, section: 0)
+        let bottomMessageIndex = IndexPath(row: chatManager.messages.count - 1,
+                                           section: 0)
         tableView.scrollToRow(at: bottomMessageIndex, at: .bottom, animated: true)
+    }
+    
+    private func displayErrorMessage(_ errorMessage:String) {
+        let alertController = UIAlertController(title: "Error",
+                                                message: errorMessage,
+                                                preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
     }
 }
 
@@ -138,14 +151,16 @@ extension ChatViewController: UITableViewDataSource {
     
     
     // Return number of rows in the table
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
         return chatManager.messages.count
     }
     
     // Create table view rows
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
         -> UITableViewCell {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell", for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell",
+                                                     for: indexPath)
             let message = chatManager.messages[indexPath.row]
             
             // Set table cell values
