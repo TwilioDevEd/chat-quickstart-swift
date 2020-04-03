@@ -12,4 +12,4 @@ import Foundation
 // Important - this function must be protected in production
 // and actually check if user could be granted access to your chat service.
 
-let tokenURL = "https://YOUR_TWILIO_FUNCTION_DOMAIN_HERE.twil.io/chat-token"
+let TOKEN_URL = "https://YOUR_TWILIO_FUNCTION_DOMAIN_HERE.twil.io/chat-token"

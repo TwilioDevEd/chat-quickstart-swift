@@ -75,7 +75,7 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
     func login(_ identity:String, completion:@escaping (Bool)->Void) {
         // Fetch Access Token from the server and initialize Chat Client - this assumes you are
         // calling a Twilio function, as described in the Quickstart docs
-        let urlString = "\(tokenURL)?identity=\(identity)"
+        let urlString = "\(TOKEN_URL)?identity=\(identity)"
         
         TokenUtils.retrieveToken(url: urlString) { (token, identity, error) in
             guard let token = token else {
