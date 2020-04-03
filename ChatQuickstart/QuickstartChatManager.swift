@@ -22,7 +22,7 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
     private let friendlyChannelName = "General Channel"
     
     // For the quickstart, this will be the view controller
-    var chatManagerDelegate: QuickstartChatManagerDelegate?
+    var delegate: QuickstartChatManagerDelegate?
     
     // MARK: Chat variables
     private var client: TwilioChatClient? = nil
@@ -53,7 +53,7 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
         messages.append(message)
         
         DispatchQueue.main.async() {
-            if let delegate = self.chatManagerDelegate {
+            if let delegate = self.delegate {
                 delegate.reloadMessages()
                 if self.messages.count > 0 {
                     delegate.receivedNewMessage()
@@ -62,7 +62,8 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
         }
     }
     
-    func sendMessage(_ messageText:String, completion: @escaping (TCHResult, TCHMessage?) -> Void) {
+    func sendMessage(_ messageText:String,
+                     completion: @escaping (TCHResult, TCHMessage?) -> Void) {
         if let messages = self.channel?.messages {
             let messageOptions = TCHMessageOptions().withBody(messageText)
             messages.sendMessage(with: messageOptions, completion: { (result, message) in
@@ -70,7 +71,6 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
             })
         }
     }
-    
     
     func login(_ identity:String, completion:@escaping (Bool)->Void) {
         // Fetch Access Token from the server and initialize Chat Client - this assumes you are
@@ -106,11 +106,11 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
             return
         }
         // Create the channel if it hasn't been created yet
-        let options = [
+        let options: [String : Any] = [
             TCHChannelOptionUniqueName: uniqueChannelName,
             TCHChannelOptionFriendlyName: friendlyChannelName,
             TCHChannelOptionType: TCHChannelType.private.rawValue
-            ] as [String : Any]
+            ]
         channelsList.createChannel(options: options, completion: { channelResult, channel in
             if (channelResult.isSuccessful()) {
                 print("Channel created.")

@@ -28,7 +28,7 @@ class ChatViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        chatManager.chatManagerDelegate = self
+        chatManager.delegate = self
         
         // Listen for keyboard events and animate text field as necessary
         NotificationCenter.default.addObserver(self,
