@@ -10,7 +10,7 @@ import UIKit
 
 import TwilioChatClient
 
-protocol QuickstartChatManagerDelegate {
+protocol QuickstartChatManagerDelegate: AnyObject {
     func reloadMessages()
     func receivedNewMessage()
 }
@@ -22,7 +22,7 @@ class QuickstartChatManager: NSObject, TwilioChatClientDelegate {
     private let friendlyChannelName = "General Channel"
 
     // For the quickstart, this will be the view controller
-    var delegate: QuickstartChatManagerDelegate?
+    weak var delegate: QuickstartChatManagerDelegate?
 
     // MARK: Chat variables
     private var client: TwilioChatClient? = nil
