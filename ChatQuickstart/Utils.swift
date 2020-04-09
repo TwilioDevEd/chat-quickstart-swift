@@ -18,7 +18,7 @@ struct PlatformUtils {
 }
 
 struct TokenUtils {
-    
+
     static func retrieveToken(url: String, completion: @escaping (String?, String?, Error?) -> Void) {
         if let requestURL = URL(string: url) {
             let session = URLSession(configuration: URLSessionConfiguration.default)
@@ -37,13 +37,11 @@ struct TokenUtils {
                     catch let error as NSError {
                         completion(nil, nil, error)
                     }
-                    
                 } else {
                     completion(nil, nil, error)
                 }
             })
             task.resume()
         }
-        
     }
 }
