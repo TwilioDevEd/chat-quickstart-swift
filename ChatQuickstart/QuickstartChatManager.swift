@@ -15,7 +15,7 @@ protocol QuickstartChatManagerDelegate {
     func receivedNewMessage()
 }
 
-class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
+class QuickstartChatManager: NSObject, TwilioChatClientDelegate {
         
     // the unique name of the channel you create
     private let uniqueChannelName = "general"
@@ -62,7 +62,7 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
         }
     }
     
-    func sendMessage(_ messageText:String,
+    func sendMessage(_ messageText: String,
                      completion: @escaping (TCHResult, TCHMessage?) -> Void) {
         if let messages = self.channel?.messages {
             let messageOptions = TCHMessageOptions().withBody(messageText)
@@ -72,7 +72,7 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
         }
     }
     
-    func login(_ identity:String, completion:@escaping (Bool)->Void) {
+    func login(_ identity: String, completion: @escaping (Bool)->Void) {
         // Fetch Access Token from the server and initialize Chat Client - this assumes you are
         // calling a Twilio function, as described in the Quickstart docs
         let urlString = "\(TOKEN_URL)?identity=\(identity)"
@@ -106,7 +106,7 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
             return
         }
         // Create the channel if it hasn't been created yet
-        let options: [String : Any] = [
+        let options: [String: Any] = [
             TCHChannelOptionUniqueName: uniqueChannelName,
             TCHChannelOptionFriendlyName: friendlyChannelName,
             TCHChannelOptionType: TCHChannelType.private.rawValue
@@ -131,7 +131,7 @@ class QuickstartChatManager:NSObject, TwilioChatClientDelegate {
         })
     }
     
-    private func joinChannel(_ channel:TCHChannel) {
+    private func joinChannel(_ channel: TCHChannel) {
         self.channel = channel
         if channel.status == .joined {
             print("Current user already exists in channel")

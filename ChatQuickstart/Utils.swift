@@ -26,7 +26,7 @@ struct TokenUtils {
                 if let data = data {
                     do {
                         let json = try JSONSerialization.jsonObject(with: data, options: [])
-                        if let tokenData = json as? [String:String] {
+                        if let tokenData = json as? [String: String] {
                             let token = tokenData["token"]
                             let identity = tokenData["identity"]
                             completion(token, identity, error)

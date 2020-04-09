@@ -33,17 +33,17 @@ class ChatViewController: UIViewController {
         // Listen for keyboard events and animate text field as necessary
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow),
-                                               name:UIResponder.keyboardWillShowNotification,
+                                               name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardDidShow),
-                                               name:UIResponder.keyboardDidShowNotification,
+                                               name: UIResponder.keyboardDidShowNotification,
                                                object: nil)
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillHide),
-                                               name:UIResponder.keyboardWillHideNotification,
+                                               name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
         
         // Set up UI controls
@@ -120,7 +120,7 @@ class ChatViewController: UIViewController {
         tableView.scrollToRow(at: bottomMessageIndex, at: .bottom, animated: true)
     }
     
-    private func displayErrorMessage(_ errorMessage:String) {
+    private func displayErrorMessage(_ errorMessage: String) {
         let alertController = UIAlertController(title: "Error",
                                                 message: errorMessage,
                                                 preferredStyle: .alert)
