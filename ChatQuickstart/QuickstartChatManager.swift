@@ -25,19 +25,19 @@ class QuickstartChatManager: NSObject, TwilioChatClientDelegate {
     weak var delegate: QuickstartChatManagerDelegate?
 
     // MARK: Chat variables
-    private var client: TwilioChatClient? = nil
-    private var channel: TCHChannel? = nil
+    private var client: TwilioChatClient?
+    private var channel: TCHChannel?
     private(set) var messages: [TCHMessage] = []
 
     func chatClient(_ client: TwilioChatClient, synchronizationStatusUpdated status: TCHClientSynchronizationStatus) {
         guard status == .completed else {
             return
         }
-        checkChannelCreation { (channel) in
+        checkChannelCreation { (_, channel) in
             if let channel = channel {
                 self.joinChannel(channel)
             } else {
-                self.createChannel() { (success, channel) in
+                self.createChannel { (success, channel) in
                     if success, let channel = channel {
                         self.joinChannel(channel)
                     }
@@ -51,7 +51,7 @@ class QuickstartChatManager: NSObject, TwilioChatClientDelegate {
                     messageAdded message: TCHMessage) {
         messages.append(message)
 
-        DispatchQueue.main.async() {
+        DispatchQueue.main.async {
             if let delegate = self.delegate {
                 delegate.reloadMessages()
                 if self.messages.count > 0 {
@@ -71,20 +71,20 @@ class QuickstartChatManager: NSObject, TwilioChatClientDelegate {
         }
     }
 
-    func login(_ identity: String, completion: @escaping (Bool)->Void) {
+    func login(_ identity: String, completion: @escaping (Bool) -> Void) {
         // Fetch Access Token from the server and initialize Chat Client - this assumes you are
         // calling a Twilio function, as described in the Quickstart docs
         let urlString = "\(TOKEN_URL)?identity=\(identity)"
 
-        TokenUtils.retrieveToken(url: urlString) { (token, identity, error) in
+        TokenUtils.retrieveToken(url: urlString) { (token, _, error) in
             guard let token = token else {
                 print("Error retrieving token: \(error.debugDescription)")
                 completion(false)
                 return
             }
             // Set up Twilio Chat client
-            TwilioChatClient.chatClient(withToken: token, properties: nil, delegate: self) {
-                (result, chatClient) in
+            TwilioChatClient.chatClient(withToken: token, properties: nil,
+                                        delegate: self) { (result, chatClient) in
                 self.client = chatClient
                 completion(result.isSuccessful())
             }
@@ -110,7 +110,7 @@ class QuickstartChatManager: NSObject, TwilioChatClientDelegate {
             TCHChannelOptionType: TCHChannelType.private.rawValue
             ]
         channelsList.createChannel(options: options, completion: { channelResult, channel in
-            if (channelResult.isSuccessful()) {
+            if channelResult.isSuccessful() {
                 print("Channel created.")
             } else {
                 print("Channel NOT created.")
@@ -119,12 +119,12 @@ class QuickstartChatManager: NSObject, TwilioChatClientDelegate {
         })
     }
 
-    private func checkChannelCreation(_ completion: @escaping(TCHChannel?) -> Void) {
+    private func checkChannelCreation(_ completion: @escaping(TCHResult?, TCHChannel?) -> Void) {
         guard let client = client, let channelsList = client.channelsList() else {
             return
         }
         channelsList.channel(withSidOrUniqueName: uniqueChannelName, completion: { (result, channel) in
-            completion(channel)
+            completion(result, channel)
         })
     }
 

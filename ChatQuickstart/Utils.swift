@@ -22,7 +22,7 @@ struct TokenUtils {
     static func retrieveToken(url: String, completion: @escaping (String?, String?, Error?) -> Void) {
         if let requestURL = URL(string: url) {
             let session = URLSession(configuration: URLSessionConfiguration.default)
-            let task = session.dataTask(with: requestURL, completionHandler: { (data, response, error) in
+            let task = session.dataTask(with: requestURL, completionHandler: { (data, _, error) in
                 if let data = data {
                     do {
                         let json = try JSONSerialization.jsonObject(with: data, options: [])
@@ -33,8 +33,7 @@ struct TokenUtils {
                         } else {
                             completion(nil, nil, nil)
                         }
-                    }
-                    catch let error as NSError {
+                    } catch let error as NSError {
                         completion(nil, nil, error)
                     }
                 } else {

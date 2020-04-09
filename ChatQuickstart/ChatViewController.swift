@@ -65,7 +65,7 @@ class ChatViewController: UIViewController {
 
     func login() {
         chatManager.login(self.identity) { (success) in
-            DispatchQueue.main.async() {
+            DispatchQueue.main.async {
                 if success {
                     self.navigationItem.prompt = "Logged in as \"\(self.identity)\""
                 } else {
@@ -129,9 +129,13 @@ class ChatViewController: UIViewController {
 // MARK: UITextField Delegate
 extension ChatViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        chatManager.sendMessage(textField.text!, completion: { (result, message) in
-            textField.text = ""
-            textField.resignFirstResponder()
+        chatManager.sendMessage(textField.text!, completion: { (result, _) in
+            if result.isSuccessful() {
+                textField.text = ""
+                textField.resignFirstResponder()
+            } else {
+                self.displayErrorMessage("Unable to send message")
+            }
         })
         return true
     }
