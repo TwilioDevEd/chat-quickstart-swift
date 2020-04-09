@@ -25,10 +25,14 @@ struct TokenUtils {
             let task = session.dataTask(with: requestURL, completionHandler: { (data, response, error) in
                 if let data = data {
                     do {
-                        let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String:String]
-                        let token = json["token"]
-                        let identity = json["identity"]
-                        completion(token, identity, error)
+                        let json = try JSONSerialization.jsonObject(with: data, options: [])
+                        if let tokenData = json as? [String:String] {
+                            let token = tokenData["token"]
+                            let identity = tokenData["identity"]
+                            completion(token, identity, error)
+                        } else {
+                            completion(nil, nil, nil)
+                        }
                     }
                     catch let error as NSError {
                         completion(nil, nil, error)
