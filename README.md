@@ -65,8 +65,11 @@ You will need to go into `ChatConstants.swift` and modify the URL for your
 Twilio Function there - each Twilio user will have a different domain to use for
 their Twilio Functions.
 
+Be sure to remove the `//` comment tag! This causes a compilation error, so that you notice that you
+need to update the function token for it to work.
+
 ```
-let tokenURL = "https://YOUR_TWILIO_FUNCTION_DOMAIN_HERE.twil.io/chat-token"
+let TOKEN_URL = // "https://YOUR_TWILIO_FUNCTION_DOMAIN_HERE.twil.io/chat-token"
 ```
 
 You should now be able to press play and run the project in the 
