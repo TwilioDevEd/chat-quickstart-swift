@@ -61,7 +61,7 @@ class ChatViewController: UIViewController {
         chatManager.shutdown()
     }
 
-    // MARK: Login / Logout
+    // MARK: Login
 
     func login() {
         chatManager.login(self.identity) { (success) in
