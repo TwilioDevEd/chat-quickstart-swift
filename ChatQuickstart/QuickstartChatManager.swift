@@ -28,6 +28,8 @@ class QuickstartChatManager: NSObject, TwilioChatClientDelegate {
     private var client: TwilioChatClient?
     private var channel: TCHChannel?
     private(set) var messages: [TCHMessage] = []
+    private var identity: String?
+    
 
     func chatClient(_ client: TwilioChatClient, synchronizationStatusUpdated status: TCHClientSynchronizationStatus) {
         guard status == .completed else {
@@ -60,6 +62,33 @@ class QuickstartChatManager: NSObject, TwilioChatClientDelegate {
             }
         }
     }
+    
+    func chatClientTokenWillExpire(_ client: TwilioChatClient) {
+        print("Chat Client Token will expire.")
+        // the chat token is about to expire, so refresh it
+        refreshAccessToken()
+    }
+    
+    private func refreshAccessToken() {
+        guard let identity = identity else {
+            return
+        }
+        let urlString = "\(TOKEN_URL)?identity=\(identity)"
+
+        TokenUtils.retrieveToken(url: urlString) { (token, _, error) in
+            guard let token = token else {
+               print("Error retrieving token: \(error.debugDescription)")
+               return
+           }
+            self.client?.updateToken(token, completion: { (result) in
+                if (result.isSuccessful()) {
+                    print("Access token refreshed")
+                } else {
+                    print("Unable to refresh access token")
+                }
+            })
+        }
+    }
 
     func sendMessage(_ messageText: String,
                      completion: @escaping (TCHResult, TCHMessage?) -> Void) {
@@ -75,6 +104,7 @@ class QuickstartChatManager: NSObject, TwilioChatClientDelegate {
         // Fetch Access Token from the server and initialize Chat Client - this assumes you are
         // calling a Twilio function, as described in the Quickstart docs
         let urlString = "\(TOKEN_URL)?identity=\(identity)"
+        self.identity = identity
 
         TokenUtils.retrieveToken(url: urlString) { (token, _, error) in
             guard let token = token else {
