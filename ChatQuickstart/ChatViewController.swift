@@ -11,237 +11,172 @@ import UIKit
 import TwilioChatClient
 
 class ChatViewController: UIViewController {
-    
-    // Important - update this URL with your Twilio Function URL
-    let tokenURL = "https://YOUR_TWILIO_FUNCTION_DOMAIN_HERE.twil.io/chat-token"
 
     // Important - this identity would be assigned by your app, for
     // instance after a user logs in
     var identity = "USER_IDENTITY"
 
-    
-    // MARK: Chat variables
-    var client: TwilioChatClient? = nil
-    var generalChannel: TCHChannel? = nil
-    var messages: [TCHMessage] = []
-    
+    // Convenience class to manage interactions with Twilio Chat
+    var chatManager = QuickstartChatManager()
+
     // MARK: UI controls
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var tableView: UITableView!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+
+        chatManager.delegate = self
+
         // Listen for keyboard events and animate text field as necessary
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow),
-                                               name:Notification.Name.UIKeyboardWillShow,
-                                               object: nil);
-        
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardDidShow),
-                                               name:Notification.Name.UIKeyboardDidShow,
-                                               object: nil);
-        
+                                               name: UIResponder.keyboardDidShowNotification,
+                                               object: nil)
+
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillHide),
-                                               name:Notification.Name.UIKeyboardWillHide,
-                                               object: nil);
-        
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+
         // Set up UI controls
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 66.0
         self.tableView.separatorStyle = .none
     }
-    
-    
+
     override func viewDidAppear(_ animated: Bool) {
-        // Create the general channel (for public use) if it hasn't been created yet
-        
-        let options = [
-            TCHChannelOptionFriendlyName: "General Channel",
-            TCHChannelOptionType: TCHChannelType.public.rawValue
-            ] as [String : Any]
-        if let client = client, let channelsList = client.channelsList() {
-            channelsList.createChannel(options: options, completion: { channelResult, channel in
-                if (channelResult.isSuccessful()) {
-                    print("Channel created.")
-                } else {
-                    print("Channel NOT created.")
-                }
-            })
-        }
-        
-        
         super.viewDidAppear(animated)
         login()
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        logout()
+        chatManager.shutdown()
     }
-    
-    
+
     // MARK: Login / Logout
-    
+
     func login() {
-        // Fetch Access Token from the server and initialize Chat Client - this assumes you are running
-        // the PHP starter app on your local machine, as instructed in the quick start guide
-        let deviceId = UIDevice.current.identifierForVendor!.uuidString
-        let urlString = "\(tokenURL)?identity=\(identity)&device=\(deviceId)"
-        
-        TokenUtils.retrieveToken(url: urlString) { (token, identity, error) in
-            if let token = token {
-                // Set up Twilio Chat client
-                TwilioChatClient.chatClient(withToken: token, properties: nil, delegate: self) {
-                    (result, chatClient) in
-                        self.client = chatClient;
-                        // Update UI on main thread
-                        DispatchQueue.main.async() {
-                            self.navigationItem.prompt = "Logged in as \"\(self.identity)\""
-                        }
-                    }
-            } else {
-                print("Error retrieving token: \(error.debugDescription)")
+        chatManager.login(self.identity) { (success) in
+            DispatchQueue.main.async {
+                if success {
+                    self.navigationItem.prompt = "Logged in as \"\(self.identity)\""
+                } else {
+                    self.navigationItem.prompt = "Unable to login"
+                    let msg = "Unable to login - check the token URL in ChatConstants.swift"
+                    self.displayErrorMessage(msg)
+                }
             }
-            
         }
     }
-    
-    
-    func logout() {
-        if let client = client {
-            client.delegate = nil
-            client.shutdown()
-            self.client = nil
-        }
-    }
-    
+
     // MARK: Keyboard Dodging Logic
-    
+
     @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardRect = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey]
+            as? NSValue)?.cgRectValue {
             UIView.animate(withDuration: 0.1, animations: { () -> Void in
                 self.bottomConstraint.constant = keyboardRect.height + 10
                 self.view.layoutIfNeeded()
             })
         }
     }
-    
+
     @objc func keyboardDidShow(notification: NSNotification) {
-        self.scrollToBottomMessage()
+        scrollToBottomMessage()
     }
-    
+
     @objc func keyboardWillHide(notification: NSNotification) {
         UIView.animate(withDuration: 0.1, animations: { () -> Void in
             self.bottomConstraint.constant = 20
             self.view.layoutIfNeeded()
         })
     }
-    
+
     // MARK: UI Logic
-    
+
     // Dismiss keyboard if container view is tapped
     @IBAction func viewTapped(_ sender: Any) {
         self.textField.resignFirstResponder()
     }
-    // Scroll to bottom of table view for messages
-    func scrollToBottomMessage() {
-        if self.messages.count == 0 {
+
+    private func scrollToBottomMessage() {
+        if chatManager.messages.count == 0 {
             return
         }
-        let bottomMessageIndex = IndexPath(row: messages.count - 1, section: 0)
+        let bottomMessageIndex = IndexPath(row: chatManager.messages.count - 1,
+                                           section: 0)
         tableView.scrollToRow(at: bottomMessageIndex, at: .bottom, animated: true)
     }
-    
-}
 
-// MARK: Twilio Chat Delegate
-extension ChatViewController: TwilioChatClientDelegate {
-        
-    func chatClient(_ client: TwilioChatClient, synchronizationStatusUpdated status: TCHClientSynchronizationStatus) {
-        if status == .completed {
-            // Join (or create) the general channel
-            let defaultChannel = "general"
-            if let channelsList = client.channelsList() {
-                channelsList.channel(withSidOrUniqueName: defaultChannel, completion: { (result, channel) in
-                    if let channel = channel {
-                        self.generalChannel = channel
-                        channel.join(completion: { result in
-                            print("Channel joined with result \(result)")
-                            
-                        })
-                    } else {
-                        // Create the general channel (for public use) if it hasn't been created yet
-                        channelsList.createChannel(options: [TCHChannelOptionFriendlyName: "General Chat Channel", TCHChannelOptionType: TCHChannelType.public.rawValue], completion: { (result, channel) -> Void in
-                                if result.isSuccessful() {
-                                    self.generalChannel = channel
-                                    self.generalChannel?.join(completion: { result in
-                                        self.generalChannel?.setUniqueName(defaultChannel, completion: { result in
-                                            print("channel unique name set")
-                                        })
-                                    })
-                                }
-                        })
-                    }
-                })
-            }
-        }
-    }
-    
-    // Called whenever a channel we've joined receives a new message
-    func chatClient(_ client: TwilioChatClient, channel: TCHChannel,
-                    messageAdded message: TCHMessage) {
-        self.messages.append(message)
-        self.tableView.reloadData()
-        DispatchQueue.main.async() {
-            if self.messages.count > 0 {
-                self.scrollToBottomMessage()
-            }
-        }
+    private func displayErrorMessage(_ errorMessage: String) {
+        let alertController = UIAlertController(title: "Error",
+                                                message: errorMessage,
+                                                preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
     }
 }
 
 // MARK: UITextField Delegate
 extension ChatViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if let messages = self.generalChannel?.messages {
-            let messageOptions = TCHMessageOptions().withBody(textField.text!)
-            messages.sendMessage(with: messageOptions, completion: { (result, message) in
+        chatManager.sendMessage(textField.text!, completion: { (result, _) in
+            if result.isSuccessful() {
                 textField.text = ""
                 textField.resignFirstResponder()
-            })
-        }
+            } else {
+                self.displayErrorMessage("Unable to send message")
+            }
+        })
         return true
     }
 }
 
-
 // MARK: UITableViewDataSource Delegate
 extension ChatViewController: UITableViewDataSource {
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
-    
+
     // Return number of rows in the table
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.messages.count
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
+        return chatManager.messages.count
     }
-    
+
     // Create table view rows
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
         -> UITableViewCell {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell", for: indexPath)
-            let message = self.messages[indexPath.row]
-            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell",
+                                                     for: indexPath)
+            let message = chatManager.messages[indexPath.row]
+
             // Set table cell values
             cell.detailTextLabel?.text = message.author
             cell.textLabel?.text = message.body
             cell.selectionStyle = .none
             return cell
+    }
+}
+
+// MARK: QuickstartChatManagerDelegate
+extension ChatViewController: QuickstartChatManagerDelegate {
+    func reloadMessages() {
+        self.tableView.reloadData()
+    }
+
+    // Scroll to bottom of table view for messages
+    func receivedNewMessage() {
+        scrollToBottomMessage()
     }
 }

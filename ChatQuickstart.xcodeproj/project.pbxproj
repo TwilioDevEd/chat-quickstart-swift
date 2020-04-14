@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		281A9481242FC2E10017DAD7 /* ChatConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281A9480242FC2E10017DAD7 /* ChatConstants.swift */; };
+		28614A352419A19000E4C4B3 /* QuickstartChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28614A342419A19000E4C4B3 /* QuickstartChatManager.swift */; };
 		286173571DEDEF0C00247541 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286173561DEDEF0C00247541 /* AppDelegate.swift */; };
 		286173591DEDEF0C00247541 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286173581DEDEF0C00247541 /* ChatViewController.swift */; };
 		2861735C1DEDEF0C00247541 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2861735A1DEDEF0C00247541 /* Main.storyboard */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		281A9480242FC2E10017DAD7 /* ChatConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatConstants.swift; sourceTree = "<group>"; };
+		28614A342419A19000E4C4B3 /* QuickstartChatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickstartChatManager.swift; sourceTree = "<group>"; };
 		286173531DEDEF0C00247541 /* ChatQuickstart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatQuickstart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		286173561DEDEF0C00247541 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		286173581DEDEF0C00247541 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -37,11 +41,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		042B849FEDC3F0D22C8DABAA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		2861734A1DEDEF0C00247541 = {
 			isa = PBXGroup;
 			children = (
 				286173551DEDEF0C00247541 /* ChatQuickstart */,
 				286173541DEDEF0C00247541 /* Products */,
+				042B849FEDC3F0D22C8DABAA /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -63,6 +75,8 @@
 				2861735F1DEDEF0C00247541 /* LaunchScreen.storyboard */,
 				286173621DEDEF0C00247541 /* Info.plist */,
 				2878B4921EB1162000FC7E18 /* Utils.swift */,
+				28614A342419A19000E4C4B3 /* QuickstartChatManager.swift */,
+				281A9480242FC2E10017DAD7 /* ChatConstants.swift */,
 			);
 			path = ChatQuickstart;
 			sourceTree = "<group>";
@@ -94,12 +108,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0810;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = "Twilio, Inc.";
 				TargetAttributes = {
 					286173521DEDEF0C00247541 = {
 						CreatedOnToolsVersion = 8.1;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1130;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -109,6 +123,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -140,9 +155,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28614A352419A19000E4C4B3 /* QuickstartChatManager.swift in Sources */,
 				286173591DEDEF0C00247541 /* ChatViewController.swift in Sources */,
 				286173571DEDEF0C00247541 /* AppDelegate.swift in Sources */,
 				2878B4931EB1162000FC7E18 /* Utils.swift in Sources */,
+				281A9481242FC2E10017DAD7 /* ChatConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -172,20 +189,30 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -222,20 +249,30 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -270,7 +307,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.twilio.ChatQuickstart;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -283,7 +320,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.twilio.ChatQuickstart;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
