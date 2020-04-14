@@ -12,4 +12,7 @@ import Foundation
 // Important - this function must be protected in production
 // and actually check if user could be granted access to your chat service.
 
-let TOKEN_URL = "https://YOUR_TWILIO_FUNCTION_DOMAIN_HERE.twil.io/chat-token"
+// For the below compile error
+// You will need to uncomment the string constant assignment
+// And replace YOUR_TWILIO_FUNCTION_DOMAIN_HERE with your subdomain
+let TOKEN_URL = // "https://YOUR_TWILIO_FUNCTION_DOMAIN_HERE.twil.io/chat-token"
