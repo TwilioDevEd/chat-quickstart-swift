@@ -4,5 +4,5 @@ source 'https://github.com/twilio/cocoapod-specs'
 platform :ios, '11.0'
 
 target 'ChatQuickstart' do
-  pod 'TwilioChatClient', '~> 3.0'
+  pod 'TwilioChatClient', '~> 4.0'
 end
