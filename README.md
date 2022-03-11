@@ -16,9 +16,9 @@ pieces of information:
 | :-------------  |:------------- |
 Service Instance SID | Like a database for your Chat data - [generate one in the console here](https://www.twilio.com/console/chat/services)
 Account SID | Your primary Twilio account identifier - find this [in the console here](https://www.twilio.com/console/chat/getting-started).
-API Key | Used to authenticate - [generate one here](https://www.twilio.com/console/chat/dev-tools/api-keys).
-API Secret | Used to authenticate - [just like the above, you'll get one here](https://www.twilio.com/console/chat/dev-tools/api-keys).
-Mobile Push Credential SID | Used to send notifications from Chat to your app - [create one in the console here](https://www.twilio.com/console/chat/credentials) or learn more about [Chat Push Notifications in iOS](https://www.twilio.com/docs/api/chat/guides/push-notifications-ios).
+API Key | Used to authenticate - [generate one here](https://console.twilio.com/us1/account/keys-credentials/api-keys?frameUrl=%2Fconsole%2Fproject%2Fapi-keys%3Fx-target-region%3Dus1).
+API Secret | Used to authenticate - [just like the above, you'll get one here](https://console.twilio.com/us1/account/keys-credentials/api-keys?frameUrl=%2Fconsole%2Fproject%2Fapi-keys%3Fx-target-region%3Dus1).
+Mobile Push Credential SID | Used to send notifications from Chat to your app - [create one in the console here](https://www.twilio.com/console/chat/credentials) or learn more about [Chat Push Notifications in iOS](https://www.twilio.com/docs/chat/ios/push-notifications-ios).
 
 ## Create a Twilio Function
 
@@ -26,7 +26,7 @@ When you build your application with Twilio Chat, you will need two pieces - the
 own server, you can use [Twilio Functions](https://www.twilio.com/docs/api/runtime/functions) to easily create this part of your solution. 
 
 If you haven't used Twilio Functions before, it's pretty easy - Functions are a way to 
-run your Node.js code in Twilio's environment. You can create new functions on the Twilio Console's [Manage Functions Page](https://www.twilio.com/console/runtime/functions/manage).
+run your Node.js code in Twilio's environment. You can create new functions on the Twilio Console's [Manage Functions Page](https://console.twilio.com/us1/develop/functions/classic/list?frameUrl=%2Fconsole%2Ffunctions%2Fmanage%3Fx-target-region%3Dus1).
 
 You will need to choose the "Programmable Chat Access Token" template, and then fill in the account information you gathered above. After you do that, the Function will appear, and you can read through it. Save it, and it will immediately be published at the URL provided - go ahead and put that URL into a web browser, and you should see a token being returned from your Function. If you are getting an error, check to make sure that all of your account information is properly defined.
 
@@ -74,10 +74,6 @@ let TOKEN_URL = // "https://YOUR_TWILIO_FUNCTION_DOMAIN_HERE.twil.io/chat-token"
 
 You should now be able to press play and run the project in the 
 simulator. 
-
-Once the app loads in the simulator, you should see a UI like this one:
-
-![quick start app screenshot](https://s3.amazonaws.com/howtodocs/ios-quickstart/iphone.png)
 
 Start sending yourself a few messages - they should start appearing in the
 `UITableView` in the starter app.
